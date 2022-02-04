@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   config: |
-    FluxNamespace: wego-system
+    FluxNamespace: flux-system
     WegoNamespace: ""
 kind: ConfigMap
 metadata:
