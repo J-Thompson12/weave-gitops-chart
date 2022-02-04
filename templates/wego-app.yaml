@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wego-app
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
 spec:
   replicas: 1
   template:
@@ -14,7 +14,7 @@ spec:
       containers:
         - name: wego-app
           image: ghcr.io/weaveworks/wego-app:v0.6.2
-          args: ["ui", "run", "-l", "--helm-repo-namespace", "wego-system"]
+          args: ["ui", "run", "-l", "--helm-repo-namespace",{{.Values.Namespace}}]
           ports:
             - containerPort: 9001
               protocol: TCP
@@ -27,11 +27,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: read-resources
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
 subjects:
   - kind: ServiceAccount
     name: wego-app-service-account
-    namespace: wego-system
+    namespace: {{.Values.Namespace}}
 roleRef:
   kind: Role
   name: resources-reader
@@ -41,7 +41,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: resources-reader
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
@@ -66,7 +66,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: wego-app-service-account
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
 secrets:
   - name: wego-app-service-account-token
 ---
@@ -74,7 +74,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wego-app
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
 spec:
   selector:
     app: wego-app
