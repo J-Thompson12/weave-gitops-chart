@@ -2,9 +2,9 @@ apiVersion: v1
 data:
   config: |
     FluxNamespace: flux-system
-    WegoNamespace: wego-system
+    WegoNamespace: {{.Values.Namespace}}
 kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: weave-gitops-config
-  namespace: wego-system
+  namespace: {{.Values.Namespace}}
